@@ -1,7 +1,21 @@
 local M = {}
 
+function P(cmd)
+  print(vim.inspect(cmd))
+end
+
 function _G.is_git_dir()
   return os.execute 'git rev-parse --is-inside-work-tree >> /dev/null 2>&1'
+end
+
+
+function _G.safe_require(module)
+  local ok, result = pcall(require, module)
+  if not ok then
+    vim.notify(string.format('Error requiring: %s', module), vim.log.levels.ERROR)
+    return ok
+  end
+  return result
 end
 
 M.keymap = {}
